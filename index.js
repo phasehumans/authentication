@@ -1,5 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
+import cors from "cors"
 
 // path config of env file
 dotenv.config()
@@ -12,6 +13,9 @@ app.use(cors({
     allowedHeaders:['Content-Type', 'Authorization'],
     credentials: true
 }))
+
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 
 const port = process.env.PORT || 3000
 

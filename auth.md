@@ -15,7 +15,10 @@
 - CORS - cross origin resource sharing (client -> frontend -> backend)
     - cors i.e origin, methods, allowheaders, credentials
     - cors err are resolve on backend
-    - cors err - the browser blocks a request to a server because the server has not allowed that origin.
+    - cors err - the browser blocks a request to a server because the server has not allowed that origin
+- backend --> ORM (nosql) / ODM (sql) --> Database (sql / nosql) 
+- backend --> mongoose --> mongoDB
+- 
 
 
 
@@ -23,12 +26,11 @@
 
 
 
-
-### semantic verionsing
+### semantic version
 - major.minor.patch
 - MAJOR → increase when you make breaking changes that are not backward compatible
 - MINOR → increase when you add features that are backward compatible
 - PATCH → increase when you fix bugs without changing features
 - ^ allow minor and patch updates
 - ~ allow only patch updates
-- * any version
+- star* any version
