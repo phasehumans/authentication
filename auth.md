@@ -16,8 +16,13 @@
     - cors i.e origin, methods, allowheaders, credentials
     - cors err are resolve on backend
     - cors err - the browser blocks a request to a server because the server has not allowed that origin
-- backend --> ORM (nosql) / ODM (sql) --> Database (sql / nosql) 
+- backend --> ORM (sql) / ODM (nosql) --> Database (sql / nosql) 
 - backend --> mongoose --> mongoDB
+- mongoDB connection
+    - create cluster, admin
+    - ip whitelisting
+    - load mongo_url in env
+    - db fn 
 - 
 
 
