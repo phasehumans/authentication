@@ -1,4 +1,4 @@
-## Setup
+## Auth
 - npm init
 - entry point - initial or main file of prgm
 - import -> type = module (package.json)
@@ -23,10 +23,20 @@
     - ip whitelisting
     - load mongo_url in env
     - db fn 
+- model
+    - schemas
+    - db structure
+- controllers
+    - fn that handle req
+    - (req, res) => {// logic}
+- routes
+    - api endpoints
+    - Route → Controller → Model → Database → back to Controller → Response
+- nodemailer & mailtrap --> emails
+- hook: presave <- save -> postsave
+- action save on userSchema
+- bcryptjs - password hashing
 - 
-
-
-
 
 
 
