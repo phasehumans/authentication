@@ -36,7 +36,8 @@
 - hook: presave <- save -> postsave
 - action save on userSchema
 - bcryptjs - password hashing
-- 
+- jsonwebtoken - 
+- cookie-parser
 
 
 
