@@ -38,9 +38,14 @@
 - bcryptjs - password hashing
 - jsonwebtoken - 
 - cookie-parser
+- user ---- middleware (verify) --- backend
+- event driven architecture nodejs -> fn runs based on event
 
-
-
+### Stateless auth
+* Server doesn’t store session data
+* After login, server gives client a signed token
+* Client sends the token with each request
+* Server verifies the token on every request
 
 ### semantic version
 - major.minor.patch

@@ -164,7 +164,7 @@ const login= async ( req, res) =>{
         const token= jwt.sign({id: user._id, role: user.role},
 
             // secret key in .env
-            "shhhhh", {
+            process.env.JWT_SECRET , {
                 expiresIn: '24h'
             }
         )
@@ -198,4 +198,72 @@ const login= async ( req, res) =>{
 
 }
 
-export {registerUser, verifyUser, login}
+const getMe= async (req, res) => {
+
+    try {
+        const user= await User.findById(req.user.id).select('-password')
+        if(!user){
+            return res.status(400).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            user
+        })
+    } catch (error) {
+        
+    }
+
+}
+
+const logoutUser= async (req, res) => {
+    try {
+        res.cookie('token', '', {
+            expires: new Date(0)
+            // immediate cookie clear
+        })
+        
+        res.status(200).json({
+            success: true,
+            message: "Logged Out successfully"
+        })
+    } catch (error) {
+        
+    }
+}
+
+const forgotPassword= async (req, res) => {
+    // get email - res.body
+    // find user based on email
+    // set resetpassword token and expiry token
+    // save user
+    // send email of route of reset password
+
+}
+
+const resetPassword= async (req, res) => {
+    // get token - params
+    // get password - body
+    // validation
+    // find user based
+    // set password in user
+    // resettoken, resetexpiry reset -> empty
+    // save
+
+
+    const {token}= req.params
+    const {password}= req.body
+
+    try {
+        const user= await User.findOne({resetPasswordToken: token, resetPasswordExpires: {$gt:Date.now()}})
+
+
+    } catch (error) {
+        
+    }
+}
+
+export {registerUser, verifyUser, login, getMe, logoutUser, resetPassword, forgotPassword}
