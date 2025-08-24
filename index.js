@@ -4,7 +4,6 @@ import cors from "cors"
 import db from "./utils/db.js"
 import cookieParser from "cookie-parser"
 
-
 // import all routes
 import userRoutes from "./routes/user.routes.js"
 
@@ -26,18 +25,7 @@ app.use(cookieParser())
 
 const port = process.env.PORT || 3000
 
-// console.log(process.env.PORT);
-
-
-app.get('/home', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.get('/chetan', (req, res) => {
-  res.send('Hello my name is Chaitanya')
-})
-
-// connected to db
+// db connect
 db()
 
 // userRoutes

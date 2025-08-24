@@ -32,7 +32,6 @@ const isLoggedIn= async (req, res, next) => {
         })
 
     }
-    next()
 }
 
 export {isLoggedIn}

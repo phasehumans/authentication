@@ -28,7 +28,7 @@ const userSchema= new mongoose.Schema({
     timestamps: true
 })
 
-
+// pre-save hook (middleware) : runs when password field is created or modified
 userSchema.pre("save", async function (next) {
     if(this.isModified('password')){
         this.password= await bcrypt.hash(this.password, 10)  // 10 salt

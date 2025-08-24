@@ -242,6 +242,9 @@ const forgotPassword= async (req, res) => {
     // save user
     // send email of route of reset password
 
+    const {email} = req.body
+
+    
 }
 
 const resetPassword= async (req, res) => {
