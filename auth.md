@@ -120,8 +120,24 @@
     - res
 - Forgot Password
     - get email
-    - validate
-    - 
+    - validate email 
+    - find user based on email
+    - create resetPassword token & expiry
+    - save user
+    - send email w/ reset: token route
+- Reset Password
+    - get token and new password
+    - find user based on resettoken and validate w/ expiry
+    - update password in user
+    - undefine/ clear resettoken and expiry
+    - save user
+
+
+### Cookies
+* Cookies are small data stored by websites on your browser
+* They remember login info, preferences, or shopping carts
+* Your browser sends them back to the site on future visits
+* Some last only during the session, others persist for a set time
 
 
 ### Stateless auth
