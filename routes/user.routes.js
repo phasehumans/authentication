@@ -9,7 +9,7 @@ router.get("/verify/:token", verifyUser)
 router.post("/login", login)
 router.get("/me", isLoggedIn, getMe)
 router.get("/logout", isLoggedIn, logoutUser)
-router.get("/forgotpass", isLoggedIn, forgotPassword)
-router.get("/resetpass", isLoggedIn, resetPassword)
+router.post("/forgotpass", forgotPassword)
+router.post("/resetpass/:token", resetPassword)
 
 export default router

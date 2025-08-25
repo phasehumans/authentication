@@ -271,15 +271,65 @@ const forgotPassword= async (req, res) => {
         })
     }
 
-    const user= await User.findOne({email})
+    try {
+        const user= await User.findOne({email})
+    
+        if(!user){
+            return res.status(400).json({
+                message: "user not found"
+            })
+        }
+    
+        const token= crypto.randomBytes(32).toString("hex")
 
-    if(!user){
-        return res.status(400).json({
-            message: "email not found"
+        user.resetPasswordToken= token
+        user.resetPasswordExpires= Date.now() + 10 * 60 * 1000
+
+        await user.save()
+
+        // nodemailer setup
+        const transporter = nodemailer.createTransport({
+            host: process.env.MAILTRAP_HOST,
+            port: process.env.MAILTRAP_PORT,
+            secure: false, // true for 465, false for other ports
+            auth: {
+                user: process.env.MAILTRAP_USERNAME,
+                pass: process.env.MAILTRAP_PASSWORD,
+            },
+        });
+
+        const mailOption= {
+            from: process.env.MAILTRAP_SENDERMAIL,
+            to: user.email,
+            subject: "Reset Password",
+            html: `
+                <p>Please click on the following link to reset password:</p>
+                <a href="${process.env.BASE_URL}/api/v1/users/resetpass/${token}">
+                ResetPassword
+                </a>
+            `
+        }
+
+        // send email
+        await transporter.sendMail(mailOption)
+
+        res.status(201).json({
+            message: "Reset Password Email sent",
+            success: true
+        })
+
+
+        
+
+    } catch (error) {
+        res.status(400).json({
+            message: "Reset Password Email not sent",
+            error,
+            success: false
         })
     }
 
-    
+
 
     
 }
@@ -288,21 +338,49 @@ const resetPassword= async (req, res) => {
     // get token - params
     // get password - body
     // validation
-    // find user based
-    // set password in user
+    // find user based on resetpass token
+    // set new password in user
     // resettoken, resetexpiry reset -> empty
     // save
 
 
     const {token}= req.params
+    console.log(token);
+    
     const {password}= req.body
+
+    if(!password){
+        return res.status(400).json({
+            message: "Password is required"
+        })
+    }
 
     try {
         const user= await User.findOne({resetPasswordToken: token, resetPasswordExpires: {$gt:Date.now()}})
 
+        if(!user){
+            return res.status(400).json({
+                message: "Invalid or expired token"
+            })
+        }
+
+        user.password= password
+
+        user.resetPasswordToken= undefined
+        user.resetPasswordExpires= undefined
+
+        await user.save()
+
+        res.status(200).json({
+            message: "Password Reset Successful"
+        })
+
 
     } catch (error) {
-        
+        res.status(400).json({
+            message: "Password Reset Failed",
+            error
+        })
     }
 }
 
