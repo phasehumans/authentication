@@ -79,6 +79,7 @@
 - nodemailer: used to send emails from your server (node lib)
 - mailtrap: testing emails
 - bcryptjs: password hashing w/ salt, can't reverse (one-way)
+- crypto: genrate gibbrish token/string
 - jsonwebtoken (JWT)
     - used for authentication and authorization
     - user log in once and then prove who they are with a token instead of sending username and password every time
@@ -86,6 +87,41 @@
 - cookie-parser
     - used to read cookies sent by the client (browser)
     - cookies: small data stored in broswer, automatically sends them to the server with every request
+
+
+### Auth Controllers
+- RegisterUser
+    - get data
+    - validate
+    - find existingUser based on email
+    - if not then create new user
+    - create (crypto) and save verification token in db
+    - send email w/ verify/:token route (nodemailer)
+    - send success status to user
+- VerifyUser
+    - get data from URL (params)
+    - validate
+    - find user based on token
+    - isVerified True
+    - remove verification token
+    - save user in db
+- Login
+    - get data
+    - validate
+    - find user based on password
+    - compare userentered pass and db pass
+    - generate and send jwt token w/ cookies
+- GetMe
+    - find user based on user.id from cookies
+    - res user w/o pass
+- Logout User
+    - overide auth cookies jwt token with empty string
+    - expire cookie immediately
+    - res
+- Forgot Password
+    - get email
+    - validate
+    - 
 
 
 ### Stateless auth

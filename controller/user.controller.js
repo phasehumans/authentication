@@ -14,8 +14,10 @@ const registerUser= async (req , res) => {
     // send token as email to user
     // send success status to user
 
+    // get data
     const { name, email, password }= req.body;
 
+    // validate data
     if(!name || !email || !password){
         return res.status(400).json({
             message: "All fields are required",
@@ -24,6 +26,7 @@ const registerUser= async (req , res) => {
     console.log(email)
     
     try {
+        // check if user already exist
         const existingUser= await User.findOne({email})
         if(existingUser){
             return res.status(400).json({
@@ -31,6 +34,7 @@ const registerUser= async (req , res) => {
             })
         }
 
+        // create user(instance) in User(class)
         const user= await User.create({
             name,
             email,
@@ -45,13 +49,15 @@ const registerUser= async (req , res) => {
             })
         }
 
+        // generate verification token (crypto: gibbrish string)
         const token= crypto.randomBytes(32).toString("hex")
         console.log(token)
 
+        // save token
         user.verificationToken = token
         await user.save()
 
-        // send email
+        // nodemailer setup
         const transporter = nodemailer.createTransport({
             host: process.env.MAILTRAP_HOST,
             port: process.env.MAILTRAP_PORT,
@@ -67,6 +73,8 @@ const registerUser= async (req , res) => {
             to: user.email,
             subject: "Verify your email",
             // text: `please click on the following link:
+
+            // passing the verify route link her, w/ token
             // ${process.env.BASE_URL}/api/v1/users/verify/${token}
             // `,
             html: `
@@ -77,6 +85,7 @@ const registerUser= async (req , res) => {
             `
         }
 
+        // send email
         await transporter.sendMail(mailOption)
 
         res.status(201).json({
@@ -102,14 +111,17 @@ const verifyUser= async (req, res) => {
     // remove verification token
     // save and return res
 
+    // get data from URL
     const {token} = req.params
 
+    // validate token
     if(!token){
         return res.status(400).json({
             message: "Invalid token"
         })
     }
 
+    // find user based on token
     const user= await User.findOne({verificationToken : token})
 
     if(!user){
@@ -118,9 +130,11 @@ const verifyUser= async (req, res) => {
         })
     }
 
+    // verified true and remove token
     user.isVerified= true
     user.verificationToken= undefined
 
+    // save user in db
     await user.save()
 
 
@@ -151,6 +165,7 @@ const login= async ( req, res) =>{
             })
         }
 
+        // compare passwords
         const isMatch= await bcrypt.compare(password, user.password)
         console.log(isMatch);
 
@@ -174,6 +189,8 @@ const login= async ( req, res) =>{
             secure: true,
             maxAge: 24*60*60*1000
         }
+
+        // send cookies w/ jwt token
         res.cookie("token", token, cookieOptions)
 
         res.status(200).json({
@@ -199,6 +216,8 @@ const login= async ( req, res) =>{
 }
 
 const getMe= async (req, res) => {
+    // find user based on id in cookies
+    // res user w/o password
 
     try {
         const user= await User.findById(req.user.id).select('-password')
@@ -220,10 +239,12 @@ const getMe= async (req, res) => {
 }
 
 const logoutUser= async (req, res) => {
+    // clear auth cookie by overide ""
     try {
         res.cookie('token', '', {
             expires: new Date(0)
-            // immediate cookie clear
+            // date(0)-> 1970
+            // this is just a trick to force the cookie to disappear immediately
         })
         
         res.status(200).json({
@@ -243,6 +264,22 @@ const forgotPassword= async (req, res) => {
     // send email of route of reset password
 
     const {email} = req.body
+
+    if(!email){
+        return res.status(400).json({
+            message: "email required"
+        })
+    }
+
+    const user= await User.findOne({email})
+
+    if(!user){
+        return res.status(400).json({
+            message: "email not found"
+        })
+    }
+
+    
 
     
 }
