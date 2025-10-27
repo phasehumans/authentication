@@ -6,7 +6,7 @@ dotenv.config()
 const db = () => {
     mongoose.connect(process.env.MONGO_URL)
     .then(() => {
-        console.log("connected to mongoDB");
+        console.log("mongoDB connected");
         
     })
     .catch((err) => {
@@ -16,3 +16,11 @@ const db = () => {
 }
 
 export default db;
+
+
+/* 
+- set admin and password
+- ip whitelisting
+- get mongo url
+
+*/

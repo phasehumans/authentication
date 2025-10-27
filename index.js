@@ -12,6 +12,7 @@ dotenv.config()
 
 const app = express()
 
+// cors middleware
 app.use(cors({
     origin: process.env.BASE_URL,
     methods: ['GET', 'POST', 'DELETE',  'OPTIONS'],

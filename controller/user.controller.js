@@ -240,6 +240,7 @@ const getMe= async (req, res) => {
 
 const logoutUser= async (req, res) => {
     // clear auth cookie by overide ""
+    // expire cookie immediate
     try {
         res.cookie('token', '', {
             expires: new Date(0)
